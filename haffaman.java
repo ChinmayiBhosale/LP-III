@@ -75,3 +75,68 @@ public class HuffmanCoding {
         printCodes(root, "");
     }
 }
+
+
+import java.util.*;
+
+class HuffmanNode {
+    char ch;
+    int freq;
+    HuffmanNode left, right;
+
+    HuffmanNode(char c, int f) {
+        ch = c;
+        freq = f;
+    }
+}
+
+public class HufmanEncoding {
+
+    // Print Huffman Codes (DFS)
+    static void printCodes(HuffmanNode root, String code) {
+        if (root == null) return;
+
+        // Leaf node (character)
+        if (root.left == null && root.right == null)
+            System.out.println(root.ch + " : " + code);
+
+        printCodes(root.left, code + "0");
+        printCodes(root.right, code + "1");
+    }
+
+    public static void main(String[] args) {
+
+        // Example input
+        char[] chars = {'a','b','c','d','e'};
+        int[] freq   = {5, 9, 12, 13, 16};
+
+
+        // Min-Heap (Greedy → pick 2 min freq nodes)
+        PriorityQueue<HuffmanNode> pq =
+                new PriorityQueue<>(Comparator.comparingInt(n -> n.freq));
+
+        // Create leaf nodes
+        for (int i = 0; i < chars.length; i++)
+            pq.add(new HuffmanNode(chars[i], freq[i]));
+
+        // Build Huffman Tree
+        while (pq.size() > 1) {
+            HuffmanNode left = pq.poll();
+            HuffmanNode right = pq.poll();
+
+            HuffmanNode parent = new HuffmanNode('-', left.freq + right.freq);
+            parent.left = left;
+            parent.right = right;
+
+
+            pq.add(parent);
+        }
+
+        // Print codes
+        HuffmanNode root = pq.poll();
+        System.out.println("Huffman Codes:");
+        printCodes(root, "");
+    }
+}
+Time Complexity: O(n log n)
+Space Complexity: O(n)
