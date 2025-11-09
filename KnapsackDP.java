@@ -49,4 +49,79 @@ public class KnapsackDP {
         sc.close();
     }
 }
+Enter number of items: 4
+Enter capacity of knapsack: 12
+Enter values of items: 
+10 24 15 27
+Enter weights of items: 
+2 3 1 6
+Maximum value in Knapsack = 76
 
+
+
+
+
+
+public class Knapsack01{
+
+    public static void main(String[] args) {
+        int[] values = {60, 100, 120};
+        int[] weights = {10, 20, 30};
+        int maxCapacity = 50;
+        int numItems = values.length;
+
+
+        int[][] dpTable = new int[numItems + 1][maxCapacity + 1];
+
+        
+        for (int i = 1; i <= numItems; i++) {
+
+
+            int currentItemIndex = i - 1;
+            int currentItemWeight = weights[currentItemIndex];
+            int currentItemValue = values[currentItemIndex];
+
+
+            for (int currentCapacity = 1; currentCapacity <= maxCapacity; currentCapacity++) {
+
+
+
+                if (currentItemWeight <= currentCapacity) {
+
+
+                    int valueWithItem = currentItemValue + dpTable[i - 1][currentCapacity - currentItemWeight];
+
+
+                    int valueWithoutItem = dpTable[i - 1][currentCapacity];
+
+
+                    dpTable[i][currentCapacity] = Math.max(valueWithItem, valueWithoutItem);
+
+                } else {
+
+                    dpTable[i][currentCapacity] = dpTable[i - 1][currentCapacity];
+                }
+            }
+        }
+
+
+        System.out.println("Maximum profit = " + dpTable[numItems][maxCapacity]);
+    }
+}
+
+
+Fractional Knapsack:
+
+Algorithm: Greedy
+
+Time: O(n log n)
+
+Space: O(n)
+
+0/1 Knapsack:
+
+Algorithm: Dynamic Programming
+
+Time: O(nW)
+
+Space: O(nW)
